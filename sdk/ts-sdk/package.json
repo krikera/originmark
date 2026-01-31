@@ -1,0 +1,65 @@
+{
+  "name": "@originmark/ts-sdk",
+  "version": "1.0.0",
+  "description": "TypeScript SDK for OriginMark digital signature verification",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepublishOnly": "npm run build",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "format": "prettier --write src/**/*.ts",
+    "typecheck": "tsc --noEmit",
+    "audit": "npm audit",
+    "audit:fix": "npm audit fix",
+    "security-check": "npm audit --audit-level high"
+  },
+  "keywords": [
+    "digital-signature",
+    "ed25519",
+    "verification",
+    "ai-content",
+    "originmark",
+    "cryptography"
+  ],
+  "author": "OriginMark",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/originmark/originmark.git",
+    "directory": "sdk/ts-sdk"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "libsodium-wrappers": "^0.7.15",
+    "axios": "^1.7.7",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/libsodium-wrappers": "^0.7.14",
+    "@types/node": "^22.5.0",
+    "typescript": "^5.6.2",
+    "vitest": "^2.1.0",
+    "@typescript-eslint/eslint-plugin": "^8.4.0",
+    "@typescript-eslint/parser": "^8.4.0",
+    "eslint": "^9.10.0",
+    "prettier": "^3.3.3"
+  }
+}

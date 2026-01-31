@@ -1,0 +1,110 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "originmark-cli"
+version = "1.0.0"
+description = "CLI tool for OriginMark digital signature verification"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [
+    { name = "OriginMark", text = "https://github.com/krikera/originmark" }
+]
+keywords = [
+    "digital-signature",
+    "ed25519",
+    "verification",
+    "ai-content",
+    "cryptography"
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Topic :: Security :: Cryptography",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Typing :: Typed"
+]
+dependencies = [
+    "click>=8.1.7",
+    "pynacl>=1.5.0",
+    "requests>=2.32.0",
+    "rich>=13.7.0",
+    "cryptography>=43.0.0",
+    "pydantic>=2.9.0",
+    "python-dateutil>=2.9.0",
+    "colorama>=0.4.6",
+    "tabulate>=0.9.0",
+    "tomli>=2.0.1; python_version < '3.11'",
+    "keyring>=25.4.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3.0",
+    "pytest-cov>=5.0.0",
+    "pytest-asyncio>=0.24.0",
+    "black>=24.8.0",
+    "ruff>=0.6.0",
+    "mypy>=1.11.0",
+    "types-requests>=2.32.0",
+    "types-python-dateutil>=2.9.0",
+]
+security = [
+    "bandit>=1.7.9",
+    "safety>=3.2.0",
+]
+
+[project.scripts]
+originmark = "originmark.cli:main"
+
+[project.urls]
+Homepage = "https://originmark.dev"
+Documentation = "https://docs.originmark.dev"
+Repository = "https://github.com/krikera/originmark"
+Issues = "https://github.com/krikera/originmark/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["originmark"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = [
+    "E",      # pycodestyle errors
+    "W",      # pycodestyle warnings
+    "F",      # Pyflakes
+    "I",      # isort
+    "UP",     # pyupgrade
+    "B",      # flake8-bugbear
+    "C4",     # flake8-comprehensions
+    "DTZ",    # flake8-datetimez
+    "T10",    # flake8-debugger
+    "RUF",    # Ruff-specific rules
+]
+ignore = ["E501"]  # Line too long - handled by formatter
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+
+[tool.black]
+line-length = 100
+target-version = ["py310", "py311", "py312"]

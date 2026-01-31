@@ -1,0 +1,221 @@
+# Dependencies
+node_modules/
+venv/
+env/
+.venv/
+.env
+.env.local
+.env.production
+.env.development
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+*.egg-info/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.tsbuildinfo
+.turbo/
+
+# Safari extension build
+extension/safari/build/
+extension/safari/*.xcworkspace
+extension/safari/xcuserdata/
+extension/safari/DerivedData/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+.nyc_output
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Security sensitive files
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+*.jks
+secrets/
+credentials/
+.secrets
+private_keys/
+wallets/
+
+# Blockchain specific
+hardhat.config.local.js
+.openzeppelin/
+cache/
+artifacts/
+
+# API keys and tokens
+.apikeys
+.tokens
+.credentials
+
+# Local configuration
+config.local.json
+settings.local.json
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+
+# Package manager lock files (keep package-lock.json but ignore others)
+yarn.lock
+pnpm-lock.yaml
+
+# Testing
+.pytest_cache/
+test-results/
+playwright-report/
+
+# Security scanning results
+.bandit
+.safety
+audit-results.json
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Docker
+.dockerignore
+Dockerfile.local
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# HSM and hardware security
+pkcs11/
+*.so
+*.dll
+
+# Configuration files that might contain secrets
+config.json
+config.local.json
+settings.json
+settings.local.json
+app.config
+local.config
+
+# Environment-specific files
+.env*
+!.env.example
+.envrc
+
+# Database files (all types)
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Security and authentication
+auth.json
+tokens.json
+secrets.json
+private/
+.secrets/
+.auth/
+.tokens/
+
+# IDE and editor files
+.vscode/settings.json
+.vscode/launch.json
+.idea/workspace.xml
+.idea/tasks.xml
+*.sublime-workspace
+*.sublime-project
+
+# OS and system files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# Temporary and cache files
+*.tmp
+*.temp
+*~
+.cache/
+.parcel-cache/
+
+# Backup and archive files
+*.backup
+*.bak
+*.old
+*.orig
+*.rej
+*.swp
+*.swo
+
+# Node.js specific
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Python specific
+*.egg
+*.egg-info
+.eggs/
+.tox/
+.coverage
+.coverage.*
+.pytest_cache/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Local development overrides
+docker-compose.override.yml
+Dockerfile.local
+.docker/ 

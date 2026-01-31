@@ -1,0 +1,43 @@
+{
+  "manifest_version": 2,
+  "name": "OriginMark Verifier",
+  "version": "1.0.0",
+  "description": "Verify AI-generated content authenticity with digital signatures",
+  "permissions": [
+    "contextMenus",
+    "storage",
+    "activeTab",
+    "notifications",
+    "http://localhost:8000/*",
+    "https://*/*"
+  ],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "applications": {
+    "gecko": {
+      "id": "originmark@originmark.dev",
+      "strict_min_version": "57.0"
+    }
+  }
+} 

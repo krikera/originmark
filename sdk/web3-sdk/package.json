@@ -1,0 +1,76 @@
+{
+  "name": "@originmark/web3-sdk",
+  "version": "1.0.0",
+  "description": "Web3 SDK for OriginMark blockchain integration",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepublishOnly": "npm run build",
+    "dev": "tsc --watch",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "format": "prettier --write src/**/*.ts",
+    "typecheck": "tsc --noEmit",
+    "audit": "npm audit",
+    "audit:fix": "npm audit fix",
+    "security-check": "npm audit --audit-level high"
+  },
+  "keywords": [
+    "web3",
+    "blockchain",
+    "ethereum",
+    "ipfs",
+    "digital-signature",
+    "originmark"
+  ],
+  "author": "OriginMark",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/originmark/originmark.git",
+    "directory": "sdk/web3-sdk"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "ethers": "^6.13.2",
+    "merkletreejs": "^0.4.0",
+    "crypto-js": "^4.2.0",
+    "axios": "^1.7.7",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.0",
+    "@types/crypto-js": "^4.2.2",
+    "typescript": "^5.6.2",
+    "vitest": "^2.1.0",
+    "@typescript-eslint/eslint-plugin": "^8.4.0",
+    "@typescript-eslint/parser": "^8.4.0",
+    "eslint": "^9.10.0",
+    "prettier": "^3.3.3"
+  },
+  "peerDependencies": {
+    "ethers": "^6.0.0"
+  },
+  "peerDependenciesMeta": {
+    "ethers": {
+      "optional": false
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "name": "originmark-web",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "format": "prettier --write .",
+    "typecheck": "tsc --noEmit",
+    "audit": "npm audit",
+    "audit:fix": "npm audit fix"
+  },
+  "dependencies": {
+    "next": "^15.3.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "axios": "^1.7.7",
+    "react-dropzone": "^14.3.5",
+    "sonner": "^1.7.0",
+    "@originmark/ts-sdk": "file:../sdk/ts-sdk",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^2.5.4",
+    "date-fns": "^4.1.0",
+    "zod": "^3.23.8",
+    "react-hook-form": "^7.53.2",
+    "@hookform/resolvers": "^3.9.1",
+    "framer-motion": "^11.11.9",
+    "lucide-react": "^0.460.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "^15.3.3",
+    "postcss": "^8.4.45",
+    "tailwindcss": "^3.4.13",
+    "typescript": "^5.6.2",
+    "prettier": "^3.3.3",
+    "prettier-plugin-tailwindcss": "^0.6.8"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

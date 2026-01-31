@@ -1,0 +1,61 @@
+{
+  "name": "@originmark/blockchain",
+  "version": "1.0.0",
+  "description": "OriginMark blockchain integration with Ethereum smart contracts",
+  "main": "index.js",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy:local": "hardhat run scripts/deploy.js --network localhost",
+    "deploy:sepolia": "hardhat run scripts/deploy.js --network sepolia",
+    "deploy:mainnet": "hardhat run scripts/deploy.js --network mainnet",
+    "verify:sepolia": "hardhat verify --network sepolia",
+    "node": "hardhat node",
+    "clean": "hardhat clean",
+    "size-contracts": "hardhat size-contracts",
+    "coverage": "hardhat coverage",
+    "audit": "npm audit",
+    "audit-fix": "npm audit fix",
+    "security-check": "npm audit --audit-level high",
+    "lint": "solhint 'contracts/**/*.sol'",
+    "lint-fix": "solhint 'contracts/**/*.sol' --fix"
+  },
+  "keywords": [
+    "blockchain",
+    "ethereum",
+    "smart-contracts",
+    "digital-signature",
+    "ipfs"
+  ],
+  "author": "OriginMark",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.17.0",
+    "npm": ">=9.0.0"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@nomicfoundation/hardhat-verify": "^2.0.2",
+    "@openzeppelin/hardhat-upgrades": "^3.0.3",
+    "hardhat": "^2.19.4",
+    "hardhat-contract-sizer": "^2.10.0",
+    "hardhat-gas-reporter": "^1.0.9",
+    "solidity-coverage": "^0.8.5",
+    "solhint": "^4.0.0",
+    "@typechain/hardhat": "^9.1.0",
+    "typechain": "^8.3.2",
+    "chai": "^4.4.1",
+    "@types/chai": "^4.3.11",
+    "@types/mocha": "^10.0.6"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.1",
+    "@openzeppelin/contracts-upgradeable": "^5.0.1",
+    "ethers": "^6.10.0",
+    "ipfs-http-client": "^60.0.1",
+    "merkletreejs": "^0.3.11",
+    "dotenv": "^16.3.1",
+    "axios": "^1.6.5",
+    "cross-env": "^7.0.3"
+  }
+}

@@ -1,0 +1,57 @@
+# OriginMark API Dependencies - Updated to Latest Secure Versions
+# Core framework and server
+fastapi==0.108.0
+uvicorn[standard]==0.25.0
+
+# Database and ORM
+sqlalchemy==2.0.25
+alembic==1.13.1
+
+# Data validation and serialization
+pydantic==2.5.3
+pydantic-settings==2.1.0
+
+# Cryptography and security
+pynacl==1.5.0
+cryptography==42.0.0
+passlib[bcrypt]==1.7.4
+python-jose[cryptography]==3.3.0
+bcrypt==4.1.2
+
+# HTTP and async
+aiohttp==3.9.1
+aiofiles==23.2.1
+httpx==0.26.0
+python-multipart==0.0.6
+
+# Image processing
+Pillow==10.2.0
+
+# Date and time utilities
+python-dateutil==2.8.2
+
+# Blockchain and IPFS
+web3==6.15.1
+ipfshttpclient==0.8.0a2
+eth-account==0.10.0
+
+# Environment and configuration
+python-dotenv==1.0.0
+
+# Logging and monitoring
+structlog==23.2.0
+
+# Security headers and CORS
+python-jose==3.3.0
+slowapi==0.1.9
+
+# Testing (dev dependencies)
+pytest==7.4.4
+pytest-asyncio==0.23.2
+pytest-cov==4.1.0
+httptest==2.1.0
+
+# Additional security packages
+bleach==6.1.0
+defusedxml==0.7.1
+secure==0.3.0 
