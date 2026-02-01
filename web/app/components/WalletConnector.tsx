@@ -4,6 +4,12 @@ import React, { useState, useEffect, createContext, useContext } from 'react';
 import { ethers } from 'ethers';
 
 // Wallet connection types
+declare global {
+  interface Window {
+    ethereum?: any;
+  }
+}
+
 interface WalletState {
   isConnected: boolean;
   address: string | null;
@@ -57,7 +63,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   // Check if wallet is already connected on page load
   useEffect(() => {
     checkConnection();
-    
+
     // Listen for account changes
     if (window.ethereum) {
       window.ethereum.on('accountsChanged', handleAccountsChanged);
@@ -79,7 +85,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       try {
         const provider = new ethers.BrowserProvider(window.ethereum);
         const accounts = await provider.listAccounts();
-        
+
         if (accounts.length > 0) {
           await updateWalletState(provider);
         }
@@ -95,7 +101,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       const address = await signer.getAddress();
       const network = await provider.getNetwork();
       const balance = await provider.getBalance(address);
-      
+
       // Try to get ENS name
       let ensName = null;
       try {
@@ -359,12 +365,12 @@ export const BlockchainSignaturePanel: React.FC<{
       // Create signature message
       const message = `OriginMark signature for content hash: ${contentHash}`;
       const signature = await signMessage(message);
-      
+
       // Mock blockchain transaction (in reality, would call smart contract)
       const mockTxHash = '0x' + Math.random().toString(16).substring(2, 66);
       setTxHash(mockTxHash);
       onBlockchainSign(mockTxHash);
-      
+
       console.log('Blockchain signature:', {
         contentHash,
         signer: address,
@@ -384,7 +390,7 @@ export const BlockchainSignaturePanel: React.FC<{
       <h3 className="text-lg font-semibold text-purple-900 mb-3">
         Blockchain Registration
       </h3>
-      
+
       {!isConnected ? (
         <p className="text-purple-700 mb-3">
           Connect your wallet to register this signature on the blockchain for enhanced trust and decentralized verification.
@@ -394,11 +400,11 @@ export const BlockchainSignaturePanel: React.FC<{
           <p className="text-purple-700">
             Register this signature on the Ethereum blockchain for permanent, tamper-proof verification.
           </p>
-          
+
           <div className="text-sm text-purple-600">
             <strong>Signer:</strong> {address}
           </div>
-          
+
           {txHash && (
             <div className="text-sm text-green-600">
               <strong>Transaction:</strong> <span className="font-mono">{txHash}</span>
@@ -410,11 +416,10 @@ export const BlockchainSignaturePanel: React.FC<{
       <button
         onClick={handleBlockchainSign}
         disabled={!isConnected || isLoading || !!txHash}
-        className={`w-full mt-3 px-4 py-2 rounded-lg font-medium transition-colors ${
-          !isConnected || isLoading || !!txHash
+        className={`w-full mt-3 px-4 py-2 rounded-lg font-medium transition-colors ${!isConnected || isLoading || !!txHash
             ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
             : 'bg-purple-600 hover:bg-purple-700 text-white'
-        }`}
+          }`}
       >
         {isLoading ? 'Signing...' : txHash ? 'Registered on Blockchain' : 'Register on Blockchain'}
       </button>
@@ -466,13 +471,13 @@ export const DIDRegistration: React.FC = () => {
       <h3 className="text-lg font-semibold text-blue-900 mb-3">
         Register Decentralized Identity
       </h3>
-      
+
       {!registered ? (
         <div className="space-y-3">
           <p className="text-blue-700 text-sm">
             Register a DID (Decentralized Identifier) to establish your identity across the decentralized web.
           </p>
-          
+
           <div>
             <label className="block text-sm font-medium text-blue-900 mb-1">
               DID
@@ -485,15 +490,14 @@ export const DIDRegistration: React.FC = () => {
               className="w-full px-3 py-2 border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-          
+
           <button
             onClick={handleRegisterDID}
             disabled={isLoading || !did.trim()}
-            className={`w-full px-4 py-2 rounded-lg font-medium transition-colors ${
-              isLoading || !did.trim()
+            className={`w-full px-4 py-2 rounded-lg font-medium transition-colors ${isLoading || !did.trim()
                 ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                 : 'bg-blue-600 hover:bg-blue-700 text-white'
-            }`}
+              }`}
           >
             {isLoading ? 'Registering...' : 'Register DID'}
           </button>

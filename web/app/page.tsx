@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { toast, Toaster } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
@@ -63,6 +63,22 @@ export default function Home() {
   const [fileResults, setFileResults] = useState<FileResult[]>([]);
   const [metadata, setMetadata] = useState({ author: "", model_used: "" });
   const [batchMode, setBatchMode] = useState(false);
+  const [isMainVisible, setIsMainVisible] = useState(false);
+  const mainSectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (isMainVisible && mainSectionRef.current) {
+      // Small timeout to ensure DOM is ready
+      setTimeout(() => {
+        mainSectionRef.current?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    }
+  }, [isMainVisible]);
+
+  const handleStart = (selectedMode: Mode) => {
+    setMode(selectedMode);
+    setIsMainVisible(true);
+  };
 
   const processFile = useCallback(
     async (file: File): Promise<SignatureResult | VerificationResult> => {
@@ -221,7 +237,7 @@ export default function Home() {
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => setMode("sign")}
+                onClick={() => handleStart("sign")}
                 className="btn-glow flex items-center gap-2"
               >
                 <FileSignature className="h-5 w-5" />
@@ -232,7 +248,7 @@ export default function Home() {
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => setMode("verify")}
+                onClick={() => handleStart("verify")}
                 className="btn-outline flex items-center gap-2"
               >
                 <Shield className="h-5 w-5" />
@@ -241,345 +257,357 @@ export default function Home() {
             </div>
           </motion.div>
         </div>
-      </header>
+      </header >
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 pb-24 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-4xl">
-          {/* Mode Switcher */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="mb-8 flex justify-center"
+      <AnimatePresence>
+        {isMainVisible && (
+          <motion.main
+            ref={mainSectionRef}
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="container mx-auto px-4 pb-24 sm:px-6 lg:px-8"
+            id="main-section"
           >
-            <div className="glass-card inline-flex p-1.5">
-              {(["sign", "verify"] as const).map((m) => (
-                <button
-                  key={m}
-                  onClick={() => setMode(m)}
-                  className={clsx(
-                    "relative rounded-xl px-6 py-3 text-sm font-semibold transition-all duration-300",
-                    mode === m
-                      ? "text-white"
-                      : "text-surface-600 hover:text-surface-900 dark:text-surface-400 dark:hover:text-white"
-                  )}
-                >
-                  {mode === m && (
-                    <motion.div
-                      layoutId="activeTab"
-                      className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary-500 to-primary-600"
-                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                    />
-                  )}
-                  <span className="relative z-10 flex items-center gap-2">
-                    {m === "sign" ? (
-                      <FileSignature className="h-4 w-4" />
-                    ) : (
-                      <Shield className="h-4 w-4" />
-                    )}
-                    {m === "sign" ? "Sign Content" : "Verify Content"}
-                  </span>
-                </button>
-              ))}
-            </div>
-          </motion.div>
 
-          {/* Batch Toggle */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="mb-6 flex justify-center"
-          >
-            <label className="glass-card flex cursor-pointer items-center gap-3 px-5 py-3">
-              <input
-                type="checkbox"
-                checked={batchMode}
-                onChange={(e) => setBatchMode(e.target.checked)}
-                className="h-5 w-5 rounded-md border-surface-300 bg-white text-primary-500 focus:ring-2 focus:ring-primary-500 focus:ring-offset-0 dark:border-surface-600 dark:bg-surface-800"
-              />
-              <span className="text-sm font-medium text-surface-700 dark:text-surface-300">
-                Batch Processing Mode
-              </span>
-            </label>
-          </motion.div>
-
-          {/* Main Card */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="glass-card p-8"
-          >
-            {/* Metadata Fields (Sign Mode) */}
-            <AnimatePresence mode="wait">
-              {mode === "sign" && (
-                <motion.div
-                  key="metadata"
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  className="mb-8 grid gap-4 sm:grid-cols-2"
-                >
-                  <div>
-                    <label className="mb-2 block text-sm font-medium text-surface-700 dark:text-surface-300">
-                      Author
-                    </label>
-                    <input
-                      type="text"
-                      value={metadata.author}
-                      onChange={(e) =>
-                        setMetadata({ ...metadata, author: e.target.value })
-                      }
-                      className="input-modern"
-                      placeholder="Your name or organization"
-                    />
-                  </div>
-                  <div>
-                    <label className="mb-2 block text-sm font-medium text-surface-700 dark:text-surface-300">
-                      AI Model Used
-                    </label>
-                    <div className="relative">
-                      <input
-                        type="text"
-                        value={metadata.model_used}
-                        onChange={(e) =>
-                          setMetadata({ ...metadata, model_used: e.target.value })
-                        }
-                        className="input-modern"
-                        placeholder="e.g., GPT-4, Claude 3, DALL-E 3"
-                      />
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {/* Dropzone */}
-            <div
-              {...getRootProps()}
-              className={clsx(
-                "dropzone group p-12 text-center",
-                isDragActive && "active"
-              )}
-            >
-              <input {...getInputProps()} />
-
-              <div className="space-y-4">
-                {loading ? (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="flex flex-col items-center gap-4"
-                  >
-                    <Loader2 className="h-12 w-12 animate-spin text-primary-500" />
-                    <p className="text-surface-600 dark:text-surface-400">
-                      Processing files...
-                    </p>
-                  </motion.div>
-                ) : (
-                  <>
-                    <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-primary-500/10 text-primary-500 transition-all duration-300 group-hover:scale-110 group-hover:bg-primary-500/20">
-                      <Upload className="h-8 w-8" />
-                    </div>
-                    <div>
-                      <p className="text-lg font-medium text-surface-800 dark:text-surface-200">
-                        {isDragActive
-                          ? "Drop files here..."
-                          : batchMode
-                            ? `Drag & drop files to ${mode}`
-                            : `Drag & drop a file to ${mode}`}
-                      </p>
-                      <p className="mt-2 text-sm text-surface-500">
-                        {mode === "sign"
-                          ? "Supports .txt, .md, .png, .jpg, .gif, .webp"
-                          : "Upload any file to verify its signature"}
-                      </p>
-                    </div>
-                    <button
-                      type="button"
-                      className="inline-flex items-center gap-2 text-sm font-medium text-primary-500 hover:text-primary-600 dark:text-primary-400"
-                    >
-                      <span>or click to browse</span>
-                      <ChevronDown className="h-4 w-4" />
-                    </button>
-                  </>
-                )}
-              </div>
-            </div>
-
-            {/* Results */}
-            <AnimatePresence>
-              {fileResults.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  className="mt-8"
-                >
-                  {/* Results Header */}
-                  <div className="mb-4 flex items-center justify-between">
-                    <h3 className="text-lg font-semibold text-surface-900 dark:text-white">
-                      Results ({fileResults.length} file{fileResults.length > 1 ? "s" : ""})
-                    </h3>
-                    <div className="flex gap-2">
-                      {mode === "sign" && fileResults.some((f) => f.result) && (
-                        <motion.button
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                          onClick={downloadAllResults}
-                          className="flex items-center gap-2 rounded-lg bg-accent-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-accent-600"
-                        >
-                          <Download className="h-4 w-4" />
-                          Download All
-                        </motion.button>
-                      )}
-                      <motion.button
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        onClick={clearResults}
-                        className="flex items-center gap-2 rounded-lg bg-surface-200 px-4 py-2 text-sm font-medium text-surface-700 transition-colors hover:bg-surface-300 dark:bg-surface-700 dark:text-surface-200 dark:hover:bg-surface-600"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                        Clear
-                      </motion.button>
-                    </div>
-                  </div>
-
-                  {/* Results List */}
-                  <div className="max-h-96 space-y-3 overflow-y-auto scrollbar-thin">
-                    {fileResults.map((fileResult, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.05 }}
-                        className={clsx(
-                          "result-card",
-                          fileResult.result && !fileResult.error
-                            ? "valid" in fileResult.result
-                              ? fileResult.result.valid
-                                ? "success"
-                                : "error"
-                              : "success"
-                            : fileResult.error
-                              ? "error"
-                              : "border-surface-200 bg-surface-50 dark:border-surface-700 dark:bg-surface-800/50"
-                        )}
-                      >
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-3">
-                            {fileResult.processing ? (
-                              <Loader2 className="h-5 w-5 animate-spin text-primary-500" />
-                            ) : fileResult.error ? (
-                              <XCircle className="h-5 w-5 text-red-500" />
-                            ) : (
-                              <CheckCircle2 className="h-5 w-5 text-accent-500" />
-                            )}
-                            <span className="font-medium">{fileResult.file.name}</span>
-                          </div>
-                          {fileResult.result && !fileResult.error && (
-                            <span className="badge badge-accent">
-                              {"valid" in fileResult.result
-                                ? fileResult.result.valid
-                                  ? "Verified"
-                                  : "Failed"
-                                : "Signed"}
-                            </span>
-                          )}
-                        </div>
-
-                        {/* Result Details */}
-                        {fileResult.result && !fileResult.error && (
-                          <div className="mt-3 space-y-2 text-sm">
-                            <div className="flex gap-2">
-                              <span className="font-medium">Hash:</span>
-                              <span className="font-mono text-xs opacity-70">
-                                {fileResult.result.content_hash?.slice(0, 32)}...
-                              </span>
-                            </div>
-                            {fileResult.result.metadata?.author && (
-                              <div className="flex gap-2">
-                                <span className="font-medium">Author:</span>
-                                <span>{fileResult.result.metadata.author}</span>
-                              </div>
-                            )}
-                            {fileResult.result.metadata?.model_used && (
-                              <div className="flex gap-2">
-                                <span className="font-medium">Model:</span>
-                                <span>{fileResult.result.metadata.model_used}</span>
-                              </div>
-                            )}
-                          </div>
-                        )}
-
-                        {fileResult.error && (
-                          <p className="mt-2 text-sm">{fileResult.error}</p>
-                        )}
-                      </motion.div>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
-
-          {/* Features Grid */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="mt-16 grid gap-6 sm:grid-cols-3"
-          >
-            {[
-              {
-                icon: Zap,
-                title: "Batch Processing",
-                description:
-                  "Process multiple files at once with efficient batch signing and verification",
-              },
-              {
-                icon: Lock,
-                title: "Ed25519 Signatures",
-                description:
-                  "Industry-standard cryptographic signatures for content authenticity",
-              },
-              {
-                icon: Globe,
-                title: "Browser Extension",
-                description:
-                  "Verify content directly from web pages with our Chrome extension",
-              },
-            ].map((feature, i) => (
+            <div className="mx-auto max-w-4xl">
+              {/* Mode Switcher */}
               <motion.div
-                key={feature.title}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.7 + i * 0.1 }}
-                className="feature-card"
+                transition={{ delay: 0.2 }}
+                className="mb-8 flex justify-center"
               >
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary-500/10 text-primary-500">
-                  <feature.icon className="h-6 w-6" />
+                <div className="glass-card inline-flex p-1.5">
+                  {(["sign", "verify"] as const).map((m) => (
+                    <button
+                      key={m}
+                      onClick={() => setMode(m)}
+                      className={clsx(
+                        "relative rounded-xl px-6 py-3 text-sm font-semibold transition-all duration-300",
+                        mode === m
+                          ? "text-white"
+                          : "text-surface-600 hover:text-surface-900 dark:text-surface-400 dark:hover:text-white"
+                      )}
+                    >
+                      {mode === m && (
+                        <motion.div
+                          layoutId="activeTab"
+                          className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary-500 to-primary-600"
+                          transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                        />
+                      )}
+                      <span className="relative z-10 flex items-center gap-2">
+                        {m === "sign" ? (
+                          <FileSignature className="h-4 w-4" />
+                        ) : (
+                          <Shield className="h-4 w-4" />
+                        )}
+                        {m === "sign" ? "Sign Content" : "Verify Content"}
+                      </span>
+                    </button>
+                  ))}
                 </div>
-                <h3 className="mb-2 text-lg font-semibold text-surface-900 dark:text-white">
-                  {feature.title}
-                </h3>
-                <p className="text-sm text-surface-600 dark:text-surface-400">
-                  {feature.description}
-                </p>
               </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </main>
+
+              {/* Batch Toggle */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3 }}
+                className="mb-6 flex justify-center"
+              >
+                <label className="glass-card flex cursor-pointer items-center gap-3 px-5 py-3">
+                  <input
+                    type="checkbox"
+                    checked={batchMode}
+                    onChange={(e) => setBatchMode(e.target.checked)}
+                    className="h-5 w-5 rounded-md border-surface-300 bg-white text-primary-500 focus:ring-2 focus:ring-primary-500 focus:ring-offset-0 dark:border-surface-600 dark:bg-surface-800"
+                  />
+                  <span className="text-sm font-medium text-surface-700 dark:text-surface-300">
+                    Batch Processing Mode
+                  </span>
+                </label>
+              </motion.div>
+
+              {/* Main Card */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="glass-card p-8"
+              >
+                {/* Metadata Fields (Sign Mode) */}
+                <AnimatePresence mode="wait">
+                  {mode === "sign" && (
+                    <motion.div
+                      key="metadata"
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="mb-8 grid gap-4 sm:grid-cols-2"
+                    >
+                      <div>
+                        <label className="mb-2 block text-sm font-medium text-surface-700 dark:text-surface-300">
+                          Author
+                        </label>
+                        <input
+                          type="text"
+                          value={metadata.author}
+                          onChange={(e) =>
+                            setMetadata({ ...metadata, author: e.target.value })
+                          }
+                          className="input-modern"
+                          placeholder="Your name or organization"
+                        />
+                      </div>
+                      <div>
+                        <label className="mb-2 block text-sm font-medium text-surface-700 dark:text-surface-300">
+                          AI Model Used
+                        </label>
+                        <div className="relative">
+                          <input
+                            type="text"
+                            value={metadata.model_used}
+                            onChange={(e) =>
+                              setMetadata({ ...metadata, model_used: e.target.value })
+                            }
+                            className="input-modern"
+                            placeholder="e.g., GPT-4, Claude 3, DALL-E 3"
+                          />
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* Dropzone */}
+                <div
+                  {...getRootProps()}
+                  className={clsx(
+                    "dropzone group p-12 text-center",
+                    isDragActive && "active"
+                  )}
+                >
+                  <input {...getInputProps()} />
+
+                  <div className="space-y-4">
+                    {loading ? (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="flex flex-col items-center gap-4"
+                      >
+                        <Loader2 className="h-12 w-12 animate-spin text-primary-500" />
+                        <p className="text-surface-600 dark:text-surface-400">
+                          Processing files...
+                        </p>
+                      </motion.div>
+                    ) : (
+                      <>
+                        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-primary-500/10 text-primary-500 transition-all duration-300 group-hover:scale-110 group-hover:bg-primary-500/20">
+                          <Upload className="h-8 w-8" />
+                        </div>
+                        <div>
+                          <p className="text-lg font-medium text-surface-800 dark:text-surface-200">
+                            {isDragActive
+                              ? "Drop files here..."
+                              : batchMode
+                                ? `Drag & drop files to ${mode}`
+                                : `Drag & drop a file to ${mode}`}
+                          </p>
+                          <p className="mt-2 text-sm text-surface-500">
+                            {mode === "sign"
+                              ? "Supports .txt, .md, .png, .jpg, .gif, .webp"
+                              : "Upload any file to verify its signature"}
+                          </p>
+                        </div>
+                        <button
+                          type="button"
+                          className="inline-flex items-center gap-2 text-sm font-medium text-primary-500 hover:text-primary-600 dark:text-primary-400"
+                        >
+                          <span>or click to browse</span>
+                          <ChevronDown className="h-4 w-4" />
+                        </button>
+                      </>
+                    )}
+                  </div>
+                </div>
+
+                {/* Results */}
+                <AnimatePresence>
+                  {fileResults.length > 0 && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      className="mt-8"
+                    >
+                      {/* Results Header */}
+                      <div className="mb-4 flex items-center justify-between">
+                        <h3 className="text-lg font-semibold text-surface-900 dark:text-white">
+                          Results ({fileResults.length} file{fileResults.length > 1 ? "s" : ""})
+                        </h3>
+                        <div className="flex gap-2">
+                          {mode === "sign" && fileResults.some((f) => f.result) && (
+                            <motion.button
+                              whileHover={{ scale: 1.02 }}
+                              whileTap={{ scale: 0.98 }}
+                              onClick={downloadAllResults}
+                              className="flex items-center gap-2 rounded-lg bg-accent-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-accent-600"
+                            >
+                              <Download className="h-4 w-4" />
+                              Download All
+                            </motion.button>
+                          )}
+                          <motion.button
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            onClick={clearResults}
+                            className="flex items-center gap-2 rounded-lg bg-surface-200 px-4 py-2 text-sm font-medium text-surface-700 transition-colors hover:bg-surface-300 dark:bg-surface-700 dark:text-surface-200 dark:hover:bg-surface-600"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                            Clear
+                          </motion.button>
+                        </div>
+                      </div>
+
+                      {/* Results List */}
+                      <div className="max-h-96 space-y-3 overflow-y-auto scrollbar-thin">
+                        {fileResults.map((fileResult, index) => (
+                          <motion.div
+                            key={index}
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: index * 0.05 }}
+                            className={clsx(
+                              "result-card",
+                              fileResult.result && !fileResult.error
+                                ? "valid" in fileResult.result
+                                  ? fileResult.result.valid
+                                    ? "success"
+                                    : "error"
+                                  : "success"
+                                : fileResult.error
+                                  ? "error"
+                                  : "border-surface-200 bg-surface-50 dark:border-surface-700 dark:bg-surface-800/50"
+                            )}
+                          >
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-3">
+                                {fileResult.processing ? (
+                                  <Loader2 className="h-5 w-5 animate-spin text-primary-500" />
+                                ) : fileResult.error ? (
+                                  <XCircle className="h-5 w-5 text-red-500" />
+                                ) : (
+                                  <CheckCircle2 className="h-5 w-5 text-accent-500" />
+                                )}
+                                <span className="font-medium">{fileResult.file.name}</span>
+                              </div>
+                              {fileResult.result && !fileResult.error && (
+                                <span className="badge badge-accent">
+                                  {"valid" in fileResult.result
+                                    ? fileResult.result.valid
+                                      ? "Verified"
+                                      : "Failed"
+                                    : "Signed"}
+                                </span>
+                              )}
+                            </div>
+
+                            {/* Result Details */}
+                            {fileResult.result && !fileResult.error && (
+                              <div className="mt-3 space-y-2 text-sm">
+                                <div className="flex gap-2">
+                                  <span className="font-medium">Hash:</span>
+                                  <span className="font-mono text-xs opacity-70">
+                                    {fileResult.result.content_hash?.slice(0, 32)}...
+                                  </span>
+                                </div>
+                                {fileResult.result.metadata?.author && (
+                                  <div className="flex gap-2">
+                                    <span className="font-medium">Author:</span>
+                                    <span>{fileResult.result.metadata.author}</span>
+                                  </div>
+                                )}
+                                {fileResult.result.metadata?.model_used && (
+                                  <div className="flex gap-2">
+                                    <span className="font-medium">Model:</span>
+                                    <span>{fileResult.result.metadata.model_used}</span>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+
+                            {fileResult.error && (
+                              <p className="mt-2 text-sm">{fileResult.error}</p>
+                            )}
+                          </motion.div>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+
+              {/* Features Grid */}
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+                className="mt-16 grid gap-6 sm:grid-cols-3"
+              >
+                {[
+                  {
+                    icon: Zap,
+                    title: "Batch Processing",
+                    description:
+                      "Process multiple files at once with efficient batch signing and verification",
+                  },
+                  {
+                    icon: Lock,
+                    title: "Ed25519 Signatures",
+                    description:
+                      "Industry-standard cryptographic signatures for content authenticity",
+                  },
+                  {
+                    icon: Globe,
+                    title: "Browser Extension",
+                    description:
+                      "Verify content directly from web pages with our Chrome extension",
+                  },
+                ].map((feature, i) => (
+                  <motion.div
+                    key={feature.title}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.7 + i * 0.1 }}
+                    className="feature-card"
+                  >
+                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary-500/10 text-primary-500">
+                      <feature.icon className="h-6 w-6" />
+                    </div>
+                    <h3 className="mb-2 text-lg font-semibold text-surface-900 dark:text-white">
+                      {feature.title}
+                    </h3>
+                    <p className="text-sm text-surface-600 dark:text-surface-400">
+                      {feature.description}
+                    </p>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </div>
+          </motion.main>
+        )}
+      </AnimatePresence>
 
       {/* Footer */}
-      <footer className="border-t border-surface-200 py-8 dark:border-surface-800">
+      < footer className="border-t border-surface-200 py-8 dark:border-surface-800" >
         <div className="container mx-auto px-4 text-center text-sm text-surface-500">
           <p>© {new Date().getFullYear()} OriginMark. Open source content provenance.</p>
         </div>
-      </footer>
-    </div>
+      </footer >
+    </div >
   );
 }
