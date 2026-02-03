@@ -102,7 +102,7 @@ const MockVerificationCard = () => (
           <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="Avatar" />
         </div>
         <div>
-          <p className="text-sm font-semibold text-surface-900 dark:text-white">Alice Freeman</p>
+          <p className="text-sm font-semibold text-surface-900 dark:text-white">P</p>
           <p className="text-xs text-surface-500">Authorized Signer</p>
         </div>
       </div>
@@ -129,12 +129,12 @@ const MockVerificationCard = () => (
         <div className="flex items-center justify-between">
           <span className="text-xs text-surface-500">Timestamp</span>
           <span className="text-xs text-surface-700 dark:text-surface-300">
-            Oct 24, 2024 • 14:32 UTC
+            Feb 26, 2026 • 14:32 UTC
           </span>
         </div>
         <div className="flex items-center justify-between">
           <span className="text-xs text-surface-500">Model</span>
-          <span className="text-xs font-medium text-primary-500">GPT-4o</span>
+          <span className="text-xs font-medium text-primary-500">GPT-5</span>
         </div>
       </div>
     </div>
