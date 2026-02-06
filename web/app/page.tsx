@@ -382,7 +382,7 @@ export default function Home() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="container mx-auto px-4 pb-24 sm:px-6 lg:px-8"
+            className="container mx-auto px-4 pb-24 pt-24 sm:px-6 lg:px-8"
             id="main-section"
           >
 
