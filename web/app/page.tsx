@@ -316,7 +316,7 @@ export default function Home() {
 
               {/* Title */}
               <h1 className="mb-6 font-display text-5xl font-bold tracking-tight text-surface-900 dark:text-white sm:text-6xl">
-                Verify AI Content with <span className="gradient-text">Authenticity</span>
+                Verify AI Content with <span className="text-primary-700 dark:text-primary-500">Authenticity</span>
               </h1>
 
               {/* Subtitle */}

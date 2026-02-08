@@ -63,7 +63,7 @@
     font-weight: 600;
     color: white;
     border-radius: 0.75rem;
-    background: linear-gradient(to right, #005F60, #00B3A4);
+    background: #005F60;
     transition: all 0.3s ease;
   }
 
