@@ -65,7 +65,7 @@ const Navbar = () => (
     <div className="container mx-auto flex items-center justify-between px-6 py-4">
       <div className="flex items-center gap-2">
         <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg">
-          <img src="/favicon.png" alt="OriginMark" className="h-full w-full object-contain" />
+          <img src="/favi.png" alt="OriginMark" className="h-full w-full object-contain" />
         </div>
         <span className="text-xl font-bold tracking-tight text-surface-900 dark:text-white">
           OriginMark
@@ -728,7 +728,7 @@ export default function Home() {
       <footer className="border-t border-surface-200 py-12 dark:border-surface-800">
         <div className="container mx-auto px-6 flex flex-col items-center justify-between gap-4 md:flex-row">
           <div className="flex items-center gap-2">
-            <img src="/favicon.png" alt="OriginMark" className="h-5 w-5 object-contain" />
+            <img src="/favi.png" alt="OriginMark" className="h-5 w-5 object-contain" />
             <span className="text-sm text-surface-500">© {new Date().getFullYear()} OriginMark</span>
           </div>
           <div className="flex gap-6 text-sm text-surface-500">
