@@ -311,7 +311,7 @@ export default function Home() {
                 className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary-500/30 bg-white/50 px-4 py-1.5 text-sm font-medium text-primary-700 backdrop-blur-sm dark:bg-white/5 dark:text-primary-300"
               >
                 <Sparkles className="h-4 w-4 text-primary-500" />
-                <span>The Standard for Content Provenance</span>
+                <span>Creating Standard for Content Provenance</span>
               </motion.div>
 
               {/* Title */}
@@ -728,7 +728,9 @@ export default function Home() {
       <footer className="border-t border-surface-200 py-12 dark:border-surface-800">
         <div className="container mx-auto px-6 flex flex-col items-center justify-between gap-4 md:flex-row">
           <div className="flex items-center gap-2">
-            <img src="/favi.png" alt="OriginMark" className="h-5 w-5 object-contain" />
+            <div className="flex h-6 w-6 items-center justify-center overflow-hidden rounded-lg">
+              <img src="/favi.png" alt="OriginMark" className="h-full w-full object-contain" />
+            </div>
             <span className="text-sm text-surface-500">© {new Date().getFullYear()} OriginMark</span>
           </div>
           <div className="flex gap-6 text-sm text-surface-500">
