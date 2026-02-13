@@ -47,8 +47,9 @@
     background: linear-gradient(135deg,
         rgba(255, 255, 255, 0.1) 0%,
         rgba(255, 255, 255, 0.05) 100%);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transform: translateZ(0); /* Hardware acceleration */
   }
 
   .dark .glass-card {

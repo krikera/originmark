@@ -92,8 +92,8 @@ const MockVerificationCard = () => (
     className="relative mx-auto w-full max-w-sm rounded-3xl border border-surface-200 bg-white p-6 shadow-2xl dark:border-surface-700 dark:bg-surface-900/90 lg:mx-0"
   >
     {/* Decorative Elements */}
-    <div className="absolute -right-12 -top-12 -z-10 h-64 w-64 rounded-full bg-primary-500/20 blur-3xl" />
-    <div className="absolute -bottom-12 -left-12 -z-10 h-64 w-64 rounded-full bg-accent-500/20 blur-3xl" />
+    <div className="absolute -right-12 -top-12 -z-10 h-64 w-64 rounded-full bg-primary-500/10 blur-2xl" />
+    <div className="absolute -bottom-12 -left-12 -z-10 h-64 w-64 rounded-full bg-accent-500/10 blur-2xl" />
 
     {/* Header */}
     <div className="flex items-center justify-between border-b border-surface-100 pb-4 dark:border-surface-800">
@@ -168,6 +168,10 @@ export default function Home() {
   const handleStart = (selectedMode: Mode) => {
     setMode(selectedMode);
     setIsMainVisible(true);
+    
+    setTimeout(() => {
+      mainSectionRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
   };
 
   const processFile = useCallback(
