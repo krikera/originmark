@@ -83,8 +83,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#F7FAFA" },
-    { media: "(prefers-color-scheme: dark)", color: "#09090b" },
+    { media: "(prefers-color-scheme: light)", color: "#0a0e14" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a0e14" },
   ],
   width: "device-width",
   initialScale: 1,
@@ -102,13 +102,7 @@ export default function RootLayout({
       className={`${inter.variable} ${outfit.variable} ${jetbrainsMono.variable}`}
       suppressHydrationWarning
     >
-      <body className="min-h-screen bg-grid antialiased">
-        {/* Gradient background orbs */}
-        <div className="fixed inset-0 -z-10 overflow-hidden">
-          <div className="absolute -left-1/4 -top-1/4 h-[600px] w-[600px] rounded-full bg-primary-500/20 blur-[120px]" />
-          <div className="absolute -right-1/4 top-1/3 h-[500px] w-[500px] rounded-full bg-accent-500/15 blur-[100px]" />
-          <div className="absolute -bottom-1/4 left-1/3 h-[400px] w-[400px] rounded-full bg-primary-600/10 blur-[80px]" />
-        </div>
+      <body className="min-h-screen bg-surface-950 bg-dot-grid bg-glow-orbs antialiased">
         {children}
       </body>
     </html>
